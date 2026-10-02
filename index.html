@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Search emoji instantly and copy them to your clipboard in one click. Fast, keyboard-friendly, and works offline."
+    />
+    <meta name="theme-color" content="#0c0e12" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Emojeeze" />
+    <link rel="canonical" href="https://emojeeze.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Emojeeze" />
+    <meta property="og:url" content="https://emojeeze.com/" />
+    <meta property="og:title" content="Emojeeze — find & copy emoji fast" />
+    <meta
+      property="og:description"
+      content="Search emoji instantly and copy them to your clipboard in one click."
+    />
+    <meta property="og:image" content="https://emojeeze.com/icon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Emojeeze — find & copy emoji fast" />
+    <meta
+      name="twitter:description"
+      content="Search emoji instantly and copy them to your clipboard in one click."
+    />
+    <meta name="twitter:image" content="https://emojeeze.com/icon.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <title>Emojeeze — find & copy emoji fast</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to emoji</a>
+
+    <aside id="ad-rail" class="ad-rail" aria-label="Advertisement" hidden>
+      <p class="ad-rail__label">Ad</p>
+      <div class="ad-rail__slot">
+        <!-- Replace IDs in ads-config.js — vertical display unit (160×600) recommended -->
+        <ins
+          id="adsense-unit"
+          class="adsbygoogle"
+          style="display: inline-block; width: 160px; height: 600px"
+          data-ad-format="vertical"
+          data-full-width-responsive="false"
+        ></ins>
+      </div>
+    </aside>
+
+    <header class="search-header">
+      <div class="search-header__inner">
+        <input
+          id="search"
+          class="search-input"
+          type="search"
+          placeholder="Search emoji… (try :joy: or :thumbs_up:)"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Search emoji"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-controls="search-preview catalog"
+        />
+        <div
+          id="skin-tone-picker"
+          class="skin-tone-picker"
+          role="group"
+          aria-label="Skin tone"
+        ></div>
+      </div>
+      <ul id="search-preview" class="search-preview" role="listbox" aria-label="Top matches" hidden></ul>
+    </header>
+
+    <main id="main" class="main" tabindex="-1">
+      <p id="results-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+
+      <section id="your-lists-section" class="emoji-section" hidden>
+        <h2 class="section-title">From your lists</h2>
+        <div
+          id="your-lists-grid"
+          class="emoji-grid emoji-grid--list"
+          role="listbox"
+          aria-label="Matching emoji from favorites and recent"
+        ></div>
+      </section>
+
+      <section id="favorites-section" class="emoji-section" hidden>
+        <h2 class="section-title">Favorites</h2>
+        <div
+          id="favorites-grid"
+          class="emoji-grid emoji-grid--list"
+          role="listbox"
+          aria-label="Favorite emoji"
+        ></div>
+      </section>
+
+      <section id="recent-section" class="emoji-section">
+        <div class="section-heading-row">
+          <h2 class="section-title section-title--inline">Recent</h2>
+          <button id="clear-recent" type="button" class="text-btn">Clear recent</button>
+        </div>
+        <div
+          id="recent-grid"
+          class="emoji-grid emoji-grid--list"
+          role="listbox"
+          aria-label="Recent emoji"
+        ></div>
+      </section>
+
+      <p id="status" class="status" aria-hidden="true"></p>
+
+      <section id="search-results-section" class="emoji-section" hidden>
+        <h2 id="search-results-heading" class="section-title">Search results</h2>
+        <div id="search-results-host" class="catalog-grid-host"></div>
+      </section>
+
+      <div id="catalog" class="catalog" aria-label="Emoji catalog"></div>
+    </main>
+
+    <div id="toast" class="toast" aria-live="assertive" hidden></div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="ads.js"></script>
+  </body>
+</html>
