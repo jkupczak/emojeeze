@@ -37,6 +37,52 @@
   <body>
     <a class="skip-link" href="#main">Skip to emoji</a>
 
+    <div id="settings-overlay" class="settings-overlay" hidden>
+      <div
+        id="settings-dialog"
+        class="settings-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
+        tabindex="-1"
+      >
+        <h2 id="settings-title" class="settings-dialog__title">Settings</h2>
+
+        <section class="settings-section">
+          <h3 class="settings-section__title">Categories</h3>
+          <p class="settings-section__hint">Hide whole groups (e.g. Flags) from browse and search.</p>
+          <div id="settings-categories" class="settings-categories"></div>
+        </section>
+
+        <section class="settings-section">
+          <h3 class="settings-section__title">Hidden emoji</h3>
+          <p class="settings-section__hint">Paste an emoji or type a name, then add. Unhide anytime.</p>
+          <div class="settings-add-row">
+            <input
+              id="settings-emoji-input"
+              class="settings-input"
+              type="text"
+              placeholder="e.g. 😀 or grinning"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button id="settings-emoji-add" type="button" class="settings-btn settings-btn--secondary">
+              Add
+            </button>
+          </div>
+          <p id="settings-emoji-error" class="settings-error" hidden></p>
+          <ul id="settings-hidden-emojis" class="settings-hidden-list"></ul>
+        </section>
+
+        <div class="settings-actions">
+          <button id="settings-cancel" type="button" class="settings-btn settings-btn--secondary">
+            Cancel
+          </button>
+          <button id="settings-save" type="button" class="settings-btn settings-btn--primary">Save</button>
+        </div>
+      </div>
+    </div>
+
     <aside id="ad-rail" class="ad-rail" aria-label="Advertisement" hidden>
       <p class="ad-rail__label">Ad</p>
       <div class="ad-rail__slot">
@@ -65,12 +111,23 @@
           aria-expanded="false"
           aria-controls="search-preview catalog"
         />
-        <div
-          id="skin-tone-picker"
-          class="skin-tone-picker"
-          role="group"
-          aria-label="Skin tone"
-        ></div>
+        <div class="header-controls">
+          <div
+            id="skin-tone-picker"
+            class="skin-tone-picker"
+            role="group"
+            aria-label="Skin tone"
+          ></div>
+          <button
+            id="settings-open"
+            type="button"
+            class="settings-gear"
+            aria-label="Open settings"
+            aria-haspopup="dialog"
+          >
+            <span class="settings-gear__icon" aria-hidden="true">⚙️</span>
+          </button>
+        </div>
       </div>
       <ul id="search-preview" class="search-preview" role="listbox" aria-label="Top matches" hidden></ul>
     </header>
@@ -120,6 +177,14 @@
 
       <div id="catalog" class="catalog" aria-label="Emoji catalog"></div>
     </main>
+
+    <div id="emoji-action-overlay" class="emoji-action-overlay" hidden>
+      <div class="emoji-action-panel" role="dialog" aria-modal="true" aria-labelledby="emoji-action-title">
+        <div id="emoji-action-display" class="emoji-action-display" aria-hidden="true"></div>
+        <p id="emoji-action-title" class="emoji-action-title"></p>
+        <div id="emoji-action-menu" class="emoji-action-menu" role="menu"></div>
+      </div>
+    </div>
 
     <div id="toast" class="toast" aria-live="assertive" hidden></div>
 
