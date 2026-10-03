@@ -643,9 +643,15 @@ body {
   inset: 0;
   z-index: 260;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-right, 0px))
+    max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
   background: rgba(8, 10, 14, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -658,7 +664,14 @@ body {
 .settings-dialog {
   width: 100%;
   max-width: 26rem;
-  max-height: 95vh;
+  margin-block: auto;
+  flex-shrink: 0;
+  max-height: calc(
+    100vh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+  );
+  max-height: calc(
+    100dvh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+  );
   overflow: auto;
   padding: 1.25rem 1.25rem 1rem;
   background: var(--bg-elevated);
