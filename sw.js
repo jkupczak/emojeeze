@@ -1,4 +1,4 @@
-const CACHE_VERSION = "emojeeze-v2";
+const CACHE_VERSION = "emojeeze-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -16,6 +16,8 @@ const ASSETS = [
   "./data-by-emoji.json",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./icon-192.png",
+  "./icon-512.png",
   "./robots.txt",
   "./sitemap.xml",
 ];

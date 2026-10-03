@@ -645,7 +645,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0;
   background: rgba(8, 10, 14, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -658,7 +658,7 @@ body {
 .settings-dialog {
   width: 100%;
   max-width: 26rem;
-  max-height: 100vh;
+  max-height: 95vh;
   overflow: auto;
   padding: 1.25rem 1.25rem 1rem;
   background: var(--bg-elevated);
