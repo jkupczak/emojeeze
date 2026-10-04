@@ -1,6 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { insertTextAtSelection } from "./write-with-emoji.js";
+import {
+  clampWriteFontSize,
+  insertTextAtSelection,
+  WRITE_DEFAULT_FONT_SIZE_REM,
+} from "./write-with-emoji.js";
+
+test("clampWriteFontSize enforces minimum only", () => {
+  assert.equal(clampWriteFontSize(0.5), 1.125);
+  assert.equal(clampWriteFontSize(WRITE_DEFAULT_FONT_SIZE_REM), WRITE_DEFAULT_FONT_SIZE_REM);
+  assert.equal(clampWriteFontSize(10), 10);
+});
 
 test("insertTextAtSelection inserts at caret", () => {
   const result = insertTextAtSelection("hello world", "🔥", { start: 5, end: 5 });

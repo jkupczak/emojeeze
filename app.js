@@ -777,17 +777,13 @@ function renderSearchPreview() {
 function applyCatalogVisibility(evaluation) {
   lastEvaluation = evaluation;
   let visibleCount = 0;
-  const writeBrowse = isWriteView() && evaluation.mode === "browse";
-
-  catalogEl.classList.toggle("is-write-collapsed", writeBrowse);
-
   if (evaluation.mode === "browse") {
     searchResultsSectionEl.hidden = true;
 
     for (const meta of groupMetas) {
-      const visibleIds = writeBrowse ? [] : visibleIdsForGroup(meta);
+      const visibleIds = visibleIdsForGroup(meta);
       const section = document.getElementById(`group-section-${meta.slug}`);
-      section?.classList.toggle("is-hidden", writeBrowse || visibleIds.length === 0);
+      section?.classList.toggle("is-hidden", visibleIds.length === 0);
       browseGrids.get(meta.slug)?.setItems(visibleIds);
       visibleCount += visibleIds.length;
     }
@@ -1289,8 +1285,8 @@ function ensureMemoryMatchMounted() {
   restartMemoryMatch = memoryMatch?.restart ?? null;
 }
 
-if (writeEditorEl instanceof HTMLTextAreaElement) {
-  writeEditorApi = initWriteWithEmoji(writeEditorEl);
+if (writeEditorEl instanceof HTMLTextAreaElement && writeViewEl instanceof HTMLElement) {
+  writeEditorApi = initWriteWithEmoji(writeEditorEl, { shell: writeViewEl });
 }
 
 if (
@@ -1325,8 +1321,6 @@ if (
       if (view === "write") {
         filterEmojis();
         refreshAllVirtualCells();
-        renderFavoritesBrowse();
-        renderRecentBrowse();
         writeEditorApi?.focusEditor();
         return;
       }
@@ -1334,7 +1328,6 @@ if (
       if (view !== "copy") return;
       filterEmojis();
       refreshAllVirtualCells();
-      catalogEl.classList.remove("is-write-collapsed");
       if (settingsOpen || !emojiActionOverlayEl.hidden) return;
       searchEl.focus();
     },

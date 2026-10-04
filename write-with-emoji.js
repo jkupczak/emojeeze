@@ -1,4 +1,19 @@
-import { STORAGE_WRITE_DRAFT, readStoredItem } from "./app-storage.js";
+import {
+  readStoredItem,
+  STORAGE_WRITE_DRAFT,
+  STORAGE_WRITE_FONT_SIZE,
+} from "./app-storage.js";
+
+export const WRITE_DEFAULT_FONT_SIZE_REM = 2.0625;
+const WRITE_MIN_FONT_SIZE_REM = 1.125;
+const WRITE_FONT_SIZE_STEP_REM = 0.125;
+
+/**
+ * @param {number} rem
+ */
+export function clampWriteFontSize(rem) {
+  return Math.max(WRITE_MIN_FONT_SIZE_REM, rem);
+}
 
 /**
  * @param {string} value
@@ -14,14 +29,29 @@ export function insertTextAtSelection(value, emoji, selection) {
 
 /**
  * @param {HTMLTextAreaElement} textarea
+ * @param {{ shell: HTMLElement }} options
  */
-export function initWriteWithEmoji(textarea) {
+export function initWriteWithEmoji(textarea, options) {
+  const { shell } = options;
+
   /** @type {{ start: number; end: number }} */
   let lastSelection = { start: 0, end: 0 };
   let saveTimer = null;
 
+  let fontSizeRem = WRITE_DEFAULT_FONT_SIZE_REM;
+  const storedSize = readStoredItem(STORAGE_WRITE_FONT_SIZE);
+  if (storedSize !== null) {
+    const parsed = Number.parseFloat(storedSize);
+    if (Number.isFinite(parsed)) fontSizeRem = clampWriteFontSize(parsed);
+  }
+
   const storedDraft = readStoredItem(STORAGE_WRITE_DRAFT);
   if (storedDraft !== null) textarea.value = storedDraft;
+
+  const fontDecreaseBtn = shell.querySelector("#write-font-decrease");
+  const fontIncreaseBtn = shell.querySelector("#write-font-increase");
+  const fontResetBtn = shell.querySelector("#write-font-reset");
+  const clearBtn = shell.querySelector("#write-clear");
 
   function syncSelection() {
     lastSelection = {
@@ -37,11 +67,40 @@ export function initWriteWithEmoji(textarea) {
     }, 250);
   }
 
+  function applyFontSize() {
+    shell.style.setProperty("--write-font-size", `${fontSizeRem}rem`);
+    localStorage.setItem(STORAGE_WRITE_FONT_SIZE, String(fontSizeRem));
+  }
+
+  function changeFontSize(delta) {
+    fontSizeRem = clampWriteFontSize(Math.round((fontSizeRem + delta) * 1000) / 1000);
+    applyFontSize();
+    textarea.focus();
+  }
+
   for (const eventName of ["select", "keyup", "mouseup", "focus", "blur"]) {
     textarea.addEventListener(eventName, syncSelection);
   }
 
   textarea.addEventListener("input", scheduleSave);
+
+  fontDecreaseBtn?.addEventListener("click", () => changeFontSize(-WRITE_FONT_SIZE_STEP_REM));
+  fontIncreaseBtn?.addEventListener("click", () => changeFontSize(WRITE_FONT_SIZE_STEP_REM));
+  fontResetBtn?.addEventListener("click", () => {
+    fontSizeRem = WRITE_DEFAULT_FONT_SIZE_REM;
+    applyFontSize();
+    textarea.focus();
+  });
+
+  clearBtn?.addEventListener("click", () => {
+    if (!textarea.value) return;
+    textarea.value = "";
+    lastSelection = { start: 0, end: 0 };
+    scheduleSave();
+    textarea.focus();
+  });
+
+  applyFontSize();
 
   /**
    * @param {string} emoji

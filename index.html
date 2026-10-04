@@ -173,6 +173,29 @@
           placeholder="Write anything here… tap emoji below to insert them."
           spellcheck="true"
         ></textarea>
+        <div class="write-toolbar" role="toolbar" aria-label="Editor controls">
+          <div class="write-toolbar__group" role="group" aria-label="Font size">
+            <button type="button" id="write-font-decrease" class="write-toolbar__btn" aria-label="Decrease font size">
+              A−
+            </button>
+            <button
+              type="button"
+              id="write-font-reset"
+              class="write-toolbar__btn write-toolbar__btn--text"
+              aria-label="Reset font size to default"
+            >
+              Reset size
+            </button>
+            <button type="button" id="write-font-increase" class="write-toolbar__btn" aria-label="Increase font size">
+              A+
+            </button>
+          </div>
+          <div class="write-toolbar__group write-toolbar__group--actions">
+            <button type="button" id="write-clear" class="write-toolbar__btn write-toolbar__btn--text">
+              Clear
+            </button>
+          </div>
+        </div>
       </section>
 
       <main id="main" class="main" tabindex="-1">

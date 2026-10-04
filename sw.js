@@ -1,4 +1,4 @@
-const CACHE_VERSION = "emojeeze-v9";
+const CACHE_VERSION = "emojeeze-v10";
 const ASSETS = [
   "./",
   "./index.html",

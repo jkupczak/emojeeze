@@ -5,6 +5,7 @@ export const STORAGE_HAPTIC = "emojeeze-haptic";
 export const STORAGE_HIDDEN_CATEGORIES = "emojeeze-hidden-categories";
 export const STORAGE_HIDDEN_EMOJIS = "emojeeze-hidden-emojis";
 export const STORAGE_WRITE_DRAFT = "emojeeze-write-draft";
+export const STORAGE_WRITE_FONT_SIZE = "emojeeze-write-font-size";
 export const STORAGE_MEMORY_BEST = "emojeeze-memory-best";
 
 export const LEGACY_STORAGE = {
