@@ -1,9 +1,17 @@
-const CACHE_VERSION = "emojeeze-v5";
+const CACHE_VERSION = "emojeeze-v9";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./app-storage.js",
+  "./app-url.js",
+  "./app-navigation.js",
+  "./activities-tiles.js",
+  "./memory-match.js",
+  "./memory-match-logic.js",
+  "./write-with-emoji.js",
+  "./overflow-menu-a11y.js",
   "./search.js",
   "./aliases.js",
   "./flag-aliases.js",
@@ -22,9 +30,26 @@ const ASSETS = [
   "./sitemap.xml",
 ];
 
+/**
+ * @param {Cache} cache
+ * @param {string[]} urls
+ */
+async function addAllSafe(cache, urls) {
+  await Promise.all(
+    urls.map(async (url) => {
+      try {
+        const response = await fetch(url);
+        if (response.ok) await cache.put(url, response);
+      } catch {
+        /* skip missing assets */
+      }
+    }),
+  );
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll(ASSETS)),
+    caches.open(CACHE_VERSION).then((cache) => addAllSafe(cache, ASSETS)),
   );
   self.skipWaiting();
 });

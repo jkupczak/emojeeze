@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Search emoji instantly and copy them to your clipboard in one click. Fast, keyboard-friendly, and works offline."
+      content="Search and copy emoji, compose with Write with Emoji, and play Activities like Memory Match. Fast, keyboard-friendly, and works offline."
     />
     <meta name="theme-color" content="#0c0e12" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -18,20 +18,20 @@
     <meta property="og:title" content="Emojeeze — find & copy emoji fast" />
     <meta
       property="og:description"
-      content="Search emoji instantly and copy them to your clipboard in one click."
+      content="Search and copy emoji, write with emoji, and play Activities—all in one fast, offline-friendly app."
     />
     <meta property="og:image" content="https://emojeeze.com/icon-192.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Emojeeze — find & copy emoji fast" />
     <meta
       name="twitter:description"
-      content="Search emoji instantly and copy them to your clipboard in one click."
+      content="Search and copy emoji, write with emoji, and play Activities—all in one fast, offline-friendly app."
     />
     <meta name="twitter:image" content="https://emojeeze.com/icon-192.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="favicon.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="icon-192.png" />
-    <title>Emojeeze — find & copy emoji fast</title>
+    <title>Emojeeze — emoji copy, write & activities</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -99,40 +99,83 @@
 
     <header class="search-header">
       <div class="search-header__inner">
-        <input
-          id="search"
-          class="search-input"
-          type="search"
-          placeholder="Search emoji… (try :joy: or :thumbs_up:)"
-          autocomplete="off"
-          spellcheck="false"
-          aria-label="Search emoji"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-controls="search-preview catalog"
-        />
-        <div class="header-controls">
-          <div
-            id="skin-tone-picker"
-            class="skin-tone-picker"
-            role="group"
-            aria-label="Skin tone"
-          ></div>
+        <div class="overflow-menu">
           <button
-            id="settings-open"
+            id="overflow-menu-btn"
             type="button"
-            class="settings-gear"
-            aria-label="Open settings"
-            aria-haspopup="dialog"
+            class="overflow-menu__trigger"
+            aria-label="Open menu"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="overflow-menu-panel"
           >
-            <span class="settings-gear__icon" aria-hidden="true">⚙️</span>
+            <span class="overflow-menu__icon" aria-hidden="true"></span>
           </button>
+          <div id="overflow-menu-panel" class="overflow-menu__panel" role="menu" hidden>
+            <button type="button" class="overflow-menu__item" role="menuitem" data-app-view="copy">
+              Copy an Emoji
+            </button>
+            <button type="button" class="overflow-menu__item" role="menuitem" data-app-view="activities">
+              Activities
+            </button>
+            <button type="button" class="overflow-menu__item" role="menuitem" data-app-view="write">
+              Write with Emoji
+            </button>
+            <button
+              type="button"
+              id="overflow-open-settings"
+              class="overflow-menu__item"
+              role="menuitem"
+            >
+              Settings
+            </button>
+          </div>
+        </div>
+        <div id="search-header-primary" class="search-header__primary">
+          <input
+            id="search"
+            class="search-input"
+            type="search"
+            placeholder="Search emoji… (try :joy: or :thumbs_up:)"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Search emoji"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="search-preview catalog"
+          />
+          <div class="header-controls">
+            <div
+              id="skin-tone-picker"
+              class="skin-tone-picker"
+              role="group"
+              aria-label="Skin tone"
+            ></div>
+          </div>
         </div>
       </div>
       <ul id="search-preview" class="search-preview" role="listbox" aria-label="Top matches" hidden></ul>
     </header>
 
-    <main id="main" class="main" tabindex="-1">
+    <section id="activities-hub" class="activities-hub activities-hub--page" hidden aria-label="Activities">
+      <h1 class="activities-hub__title">Activities</h1>
+      <div id="activities-hub-grid" class="activities-hub__grid"></div>
+    </section>
+
+    <div id="memory-match-root" class="memory-match-root" hidden></div>
+
+    <div id="app-content" class="app-content">
+      <section id="write-view" class="write-view" hidden aria-label="Write with emoji">
+        <label for="write-editor" class="visually-hidden">Your message</label>
+        <textarea
+          id="write-editor"
+          class="write-editor"
+          placeholder="Write anything here… tap emoji below to insert them."
+          spellcheck="true"
+        ></textarea>
+      </section>
+
+      <main id="main" class="main" tabindex="-1">
       <p id="results-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
 
       <section id="your-lists-section" class="emoji-section" hidden>
@@ -176,7 +219,13 @@
       </section>
 
       <div id="catalog" class="catalog" aria-label="Emoji catalog"></div>
-    </main>
+
+      <section id="activities-inline" class="activities-hub activities-hub--inline" aria-label="Activities & tools">
+        <h2 class="section-title">Activities & tools</h2>
+        <div id="activities-inline-grid" class="activities-hub__grid"></div>
+      </section>
+      </main>
+    </div>
 
     <div id="emoji-action-overlay" class="emoji-action-overlay" hidden>
       <div class="emoji-action-panel" role="dialog" aria-modal="true" aria-labelledby="emoji-action-title">

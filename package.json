@@ -7,6 +7,6 @@
     "dev:3000": "PORT=3000 node dev-server.mjs",
     "dev:serve": "npx --yes serve . -l 5173",
     "start": "npm run dev",
-    "test": "node --test skin-tone.test.js"
+    "test": "node --test skin-tone.test.js search.test.js write-with-emoji.test.js memory-match-logic.test.js"
   }
 }

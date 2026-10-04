@@ -1,7 +1,7 @@
 {
   "name": "Emojeeze",
   "short_name": "Emojeeze",
-  "description": "Find and copy emoji to your clipboard in one click.",
+  "description": "Search and copy emoji, compose with Write with Emoji, and play Activities like Memory Match.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -19,6 +19,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

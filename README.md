@@ -1,20 +1,21 @@
 # Emojeeze
 
-**[emojeeze.com](https://emojeeze.com)** — search emoji and copy them to your clipboard in one click.
+**[emojeeze.com](https://emojeeze.com)** — search and copy emoji, compose with **Write with Emoji**, and play **Activities** like Memory Match.
 
-Emojeeze is a fast, keyboard-friendly emoji picker built as a static site. It works offline after the first visit (PWA + service worker), keeps your favorites and recent copies in the browser, and supports skin-tone preferences.
+Emojeeze is a fast, keyboard-friendly emoji app built as a static site. It works offline after the first visit (PWA + service worker), keeps your favorites and recent copies in the browser, and supports skin-tone preferences.
 
 ## Features
 
-- Instant search with fuzzy matching, aliases, and `:shortcode:` syntax (e.g. `:joy:`)
-- Live top-match preview; **Enter** in the search box copies the best result
-- Full-width emoji grid with category browse
-- One-click copy with clipboard fallback
+- **Copy an Emoji** — instant search with fuzzy matching, aliases, and `:shortcode:` syntax (e.g. `:joy:`)
+- Live top-match preview; **Enter** in the search box copies or inserts the best result
+- Full-width emoji grid with category browse (virtualized for performance)
+- **Write with Emoji** — split view: compose text and tap emoji to insert at the caret (draft saved locally)
+- **Activities** — Emoji Memory Match with difficulty levels and best-turn tracking
+- Overflow menu for modes, plus **Activities & tools** tiles at the bottom of the catalog
 - Favorites (star) and usage-weighted **Recent**, with pin and clear
-- Per-favorite skin tone; global skin-tone picker
-- Virtualized catalog for smooth scrolling on large lists
+- Global skin-tone picker; settings for hidden categories and emoji
 - Optional fixed vertical AdSense rail on desktop (see configuration)
-- Deep links: `?q=heart`, `?emoji=🔥`
+- Deep links: `?q=heart`, `?emoji=🔥`, `?mode=write`, `?mode=activities`, `?mode=memory-match` (legacy `?mode=games` → Activities)
 
 ## Local development
 
@@ -29,57 +30,56 @@ Open [http://127.0.0.1:5173](http://127.0.0.1:5173) (or [http://localhost:5173](
 
 **Troubleshooting 404**
 
-1. Run commands from **`~/Programming/emojeeze`** (not the old `emoji-copy` folder).
-2. After `npm run dev`, you should see `Emojeeze dev server running` in the terminal. If you don’t, the server isn’t started.
-3. Port **5173** is often taken by another tool (e.g. Vite). Free it or use another port:
-
-   ```bash
-   lsof -i :5173
-   kill <PID>
-   # or
-   npm run dev:3000
-   ```
-
-   Then open http://localhost:3000/
+1. Run commands from the project root.
+2. After `npm run dev`, you should see `Emojeeze dev server running` in the terminal.
+3. Port **5173** is often taken by another tool. Free it or use `npm run dev:3000`, then open http://localhost:3000/
 
 ## Scripts
 
 | Command        | Description                          |
 |----------------|--------------------------------------|
 | `npm run dev`  | Serve the site on port 5173          |
-| `npm test`     | Run skin-tone unit tests             |
+| `npm test`     | Run unit tests                       |
 
 ## Configuration
 
 ### Site URL
 
-Canonical and Open Graph URLs are set in:
+Canonical and Open Graph URLs use the apex domain **`https://emojeeze.com`** (no `www`):
 
 - `site-config.js` — `SITE_ORIGIN`
 - `index.html` — `canonical`, `og:*`, Twitter meta tags
+- `CNAME` — `emojeeze.com`
 - `sitemap.xml` and `robots.txt`
-
-Update these if your production domain differs from `https://emojeeze.com`.
 
 ### Google AdSense
 
-Edit `ads-config.js` with your publisher ID (`ca-pub-…`) and ad slot ID. Ads load only when both are valid; the right-side rail is hidden on viewports under 1024px. AdSense requires a live, approved domain.
+Edit `ads-config.js` with your publisher ID (`ca-pub-…`) and ad slot ID. Ads load only when both are valid; the right-side rail is hidden on viewports under 1024px.
 
 ## Deploy
 
 Deploy the project root as static files (Netlify, Cloudflare Pages, GitHub Pages, S3, etc.). Ensure:
 
-- HTTPS is enabled
+- HTTPS is enabled on your chosen host
+- Apex domain `emojeeze.com` redirects from `www` if both exist
 - `sw.js` is served from the site root (same path as in the repo)
-- SPA-style hosts serve `index.html` for unknown paths if you add routes later
 
-After deploy, bump `CACHE_VERSION` in `sw.js` when you ship breaking cache updates.
+### Service worker cache
+
+When you ship changes—especially new JS modules or renamed assets—**bump `CACHE_VERSION` in `sw.js`**. The install step precaches listed assets individually so one missing file does not fail the entire install.
 
 ## Project structure
 
 | Path | Purpose |
 |------|---------|
-| `app.js` | UI, storage, virtual grids, copy flow |
+| `app.js` | Main UI orchestration, catalog, copy/insert flow |
+| `app-navigation.js` | Overflow menu and view modes |
+| `app-storage.js` | `localStorage` keys and legacy migration |
+| `app-url.js` | URL / deep-link helpers for search and `mode` |
+| `activities-tiles.js` | Activity & mode tiles for hub and catalog footer |
+| `write-with-emoji.js` | Write mode caret insert and draft persistence |
+| `memory-match.js` / `memory-match-logic.js` | Memory Match game UI and pure logic |
+| `overflow-menu-a11y.js` | Keyboard navigation for overflow menu |
 | `search.js` / `aliases.js` | Search index, fuzzy match, aliases |
 | `skin-tone.js` | Fitzpatrick / ZWJ-aware tone application |
 | `virtual-grid.js` | Windowed emoji rendering |
@@ -88,7 +88,7 @@ After deploy, bump `CACHE_VERSION` in `sw.js` when you ship breaking cache updat
 
 ## Privacy
 
-Favorites, recent emoji, skin tone, and similar settings are stored in **`localStorage`** on the user’s device. No account or backend is required for core functionality.
+Favorites, recent emoji, skin tone, write drafts, memory-match bests, and similar settings are stored in **`localStorage`** on the user’s device. No account or backend is required for core functionality.
 
 ## License
 
